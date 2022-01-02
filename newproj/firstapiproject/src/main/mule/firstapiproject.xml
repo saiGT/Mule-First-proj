@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c76bc148-e050-462d-a958-669818f02ea9">
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="dc7975ab-8042-4a02-b9a3-1c23c255bed7" >
+		<email:smtp-connection host="smtp.gmail.com" port="587" user="saisanddip114@gmail.com" password="sandeep013" timeoutUnit="NANOSECONDS">
+			<pooling-profile />
+			<email:properties >
+				<email:property key="mail.smtp.starttls.enable" value="true" />
+			</email:properties>
+		</email:smtp-connection>
+	</email:smtp-config>
+	<flow name="firstapiprojectFlow" doc:id="0a222f64-654d-40da-a415-54a1421f3139" >
+		<http:listener doc:name="Listener" doc:id="7a874684-9eef-43aa-a840-0b62552df57a" config-ref="HTTP_Listener_config" path="/helloOrigins"/>
+		<set-payload value="Hello World! Welcome to Origins" doc:name="Set Payload" doc:id="924c48b2-8155-4c0a-931e-636764c956fa" />
+		<email:send doc:name="Send" doc:id="3d181424-69d5-46c7-9e93-1350e7b25aac" config-ref="Email_SMTP" fromAddress="mule@train.com" subject="Test Mule flow">
+			<email:to-addresses >
+				<email:to-address value="saisanddip35@gmail.com" />
+			</email:to-addresses>
+			<email:cc-addresses />
+			<email:bcc-addresses />
+			<email:reply-to-addresses />
+		</email:send>
+	</flow>
+</mule>
